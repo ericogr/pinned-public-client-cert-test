@@ -41,7 +41,7 @@ func loadCertificates(certDir string) (tls.Certificate, *x509.CertPool, error) {
 func makeHttpRequest(cert tls.Certificate, serverAddr string) (*http.Response, error) {
 	// Configuração TLS para o cliente
 	tlsConfig := &tls.Config{
-		InsecureSkipVerify: false,                   // Ignorar a validação do certificado do servidor
+		InsecureSkipVerify: true,                    // Ignorar a validação do certificado do servidor
 		Certificates:       []tls.Certificate{cert}, // Enviar o certificado do cliente
 	}
 
@@ -67,7 +67,7 @@ func makeHttpRequest(cert tls.Certificate, serverAddr string) (*http.Response, e
 func main() {
 	// Definir o diretório dos certificados
 	certsDir := "./certs"
-	serverAddr := "https://www.ericogr.com.br:8443" // Endereço do servidor HTTP
+	serverAddr := "https://localhost:8443" // Endereço do servidor HTTP
 
 	// Carregar certificados
 	clientCertTLS, _, err := loadCertificates(certsDir)
