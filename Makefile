@@ -22,8 +22,7 @@ BITS=2048
 
 # nginx
 NGINX_IMAGE=nginx:stable-alpine3.20
-CONTAINER_NAME=nginx
-
+NGINX_REMOTE_SERVER_CONTAINER_NAME=nginx_remote_server
 
 .PHONY: all clean ca server client
 
@@ -79,21 +78,21 @@ clean: docker-clean
 
 docker-run:
 	@docker network create reserve-proxy-net || true
-	@docker run -d --network reserve-proxy-net --name $(CONTAINER_NAME) -p 8443:8443 \
+	@docker run -d --network reserve-proxy-net --name $(NGINX_REMOTE_SERVER_CONTAINER_NAME) -p 8443:8443 \
 		-v $(PWD)/$(CERTS_DIR)/server.crt:/etc/nginx/ssl/server.crt:ro \
 		-v $(PWD)/$(CERTS_DIR)/server.key:/etc/nginx/ssl/server.key:ro \
 		-v $(PWD)/$(CERTS_DIR)/ca.crt:/etc/nginx/ssl/ca.crt:ro \
-		-v $(PWD)/nginx/proxy.conf:/etc/nginx/conf.d/proxy.conf:ro \
+		-v $(PWD)/nginx_remote_server/proxy.conf:/etc/nginx/conf.d/proxy.conf:ro \
 		$(NGINX_IMAGE)
 	@docker run -d --network reserve-proxy-net --name backend -p 8080:80 \
 		$(NGINX_IMAGE)
 		
 docker-stop:
-	@docker stop $(CONTAINER_NAME) || docker rm $(CONTAINER_NAME)
+	@docker stop $(NGINX_REMOTE_SERVER_CONTAINER_NAME) || docker rm $(NGINX_REMOTE_SERVER_CONTAINER_NAME)
 	@docker stop backend || docker rm backend
 
 docker-clean:
-	@docker rm -f $(CONTAINER_NAME)
+	@docker rm -f $(NGINX_REMOTE_SERVER_CONTAINER_NAME)
 	@docker rm -f backend
 
 test: test-without-certs test-with-certs
