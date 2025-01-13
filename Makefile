@@ -52,7 +52,7 @@ $(SERVER_KEY): | $(CERTS_DIR)
 
 $(SERVER_CSR): $(SERVER_KEY)
 	@openssl req -new -key $(SERVER_KEY) -out $(SERVER_CSR) \
-		-subj "/C=BR/ST=SaoPaulo/L=SaoPaulo/O=MyCompany/OU=Server/CN=example.com"
+		-subj "/C=BR/ST=SaoPaulo/L=SaoPaulo/O=MyCompany/OU=Server/CN=$(NGINX_REMOTE_SERVER_CONTAINER_NAME)"
 
 $(SERVER_CERT): $(SERVER_CSR) $(CA_KEY) $(CA_CERT)
 	@openssl x509 -req -in $(SERVER_CSR) -CA $(CA_CERT) -CAkey $(CA_KEY) -CAcreateserial \
