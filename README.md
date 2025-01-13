@@ -30,3 +30,6 @@ Test all:
 ```bash
 make test
 ```
+## Additional example
+
+As an additional example, an nginx_local_server was configured to connect to the nginx_remote_server using a pinned certificate. This setup allows the local Nginx to forward requests to the remote server with the pinned certificate, eliminating the need to modify the application.
