@@ -66,7 +66,7 @@ $(CLIENT_KEY): | $(CERTS_DIR)
 
 $(CLIENT_CSR): $(CLIENT_KEY)
 	@openssl req -new -key $(CLIENT_KEY) -out $(CLIENT_CSR) \
-		-subj "/C=BR/ST=SaoPaulo/L=SaoPaulo/O=MyCompany/OU=Client/CN=ClientApp"
+		-subj "/C=BR/ST=SaoPaulo/L=SaoPaulo/O=MyCompany/OU=Client/CN=clientsampleapp.com"
 
 $(CLIENT_CERT): $(CLIENT_CSR) $(CA_KEY) $(CA_CERT)
 	@openssl x509 -req -in $(CLIENT_CSR) -CA $(CA_CERT) -CAkey $(CA_KEY) -CAcreateserial \
